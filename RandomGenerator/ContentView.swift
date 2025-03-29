@@ -1,14 +1,7 @@
-//
-//  ContentView.swift
-//  RandomGenerator
-//
-//  Created by chanales flores on 3/16/25.
-//
-
 import SwiftUI
 import UIKit
 
-// Separate component for the number box
+// MARK: - Number Box Component
 struct NumberBox: View {
     let number: Int
     let isHighlighted: Bool
@@ -41,7 +34,8 @@ struct NumberBox: View {
     }
 }
 
-struct ContentView: View {
+// MARK: - Random Number Generator View
+struct NumberGeneratorView: View {
     @State private var minValue: String = ""
     @State private var maxValue: String = ""
     @State private var numberOfValues: String = "5"
@@ -56,36 +50,27 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                // Title
-                Text("Random Number Generator")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 10)
-                
-                // Input fields section
-                inputFieldsSection
-                
-                // Generate button
-                generateButton
-                
-                // Results section
-                if !randomNumbers.isEmpty {
-                    resultsSection
-                }
-                
-                Spacer()
+        VStack(spacing: 20) {
+            // Input fields section
+            inputFieldsSection
+            
+            // Generate button
+            generateButton
+            
+            // Results section
+            if !randomNumbers.isEmpty {
+                resultsSection
             }
-            .padding()
-            .alert(isPresented: $showError) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(errorMessage),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
-            .navigationBarTitle("", displayMode: .inline)
+            
+            Spacer()
+        }
+        .padding()
+        .alert(isPresented: $showError) {
+            Alert(
+                title: Text("Error"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -252,6 +237,380 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if copiedFeedback == "\(number)" {
                 copiedFeedback = nil
+            }
+        }
+    }
+}
+
+// MARK: - Dice Roller View
+struct DiceRollerView: View {
+    @State private var diceCount: Int = 2
+    @State private var diceType: Int = 6
+    @State private var diceResults: [Int] = []
+    @State private var isRolling: Bool = false
+    @State private var totalValue: Int = 0
+    @State private var copiedFeedback: Bool = false
+    
+    private let diceTypes = [4, 6, 8, 10, 12, 20, 100]
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Dice configuration
+            VStack(spacing: 15) {
+                // Number of dice
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Number of Dice")
+                        .font(.headline)
+                    
+                    Stepper("\(diceCount) dice", value: $diceCount, in: 1...10)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                }
+                
+                // Dice type
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Dice Type")
+                        .font(.headline)
+                    
+                    Picker("Select dice type", selection: $diceType) {
+                        ForEach(diceTypes, id: \.self) { type in
+                            Text("d\(type)").tag(type)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.vertical, 8)
+                }
+            }
+            
+            // Roll button
+            Button(action: rollDice) {
+                Text("Roll Dice")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            
+            // Results
+            if !diceResults.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text("Results:")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        // Copy button
+                        Button(action: copyDiceResults) {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                Text("Copy")
+                            }
+                            .font(.system(size: 14))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.blue)
+                            .cornerRadius(6)
+                        }
+                    }
+                    
+                    // Dice results
+                    ScrollView {
+                        VStack(spacing: 15) {
+                            // Dice icons
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))], spacing: 10) {
+                                ForEach(diceResults.indices, id: \.self) { index in
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.blue.opacity(0.1))
+                                            .frame(width: 60, height: 60)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.blue, lineWidth: 1)
+                                            )
+                                        
+                                        Text("\(diceResults[index])")
+                                            .font(.system(size: 20, weight: .bold))
+                                            .foregroundColor(.blue)
+                                    }
+                                }
+                            }
+                            
+                            // Total
+                            HStack {
+                                Text("Total:")
+                                    .font(.headline)
+                                
+                                Spacer()
+                                
+                                Text("\(totalValue)")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                            }
+                            .padding()
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(8)
+                        }
+                        .padding()
+                    }
+                    .frame(maxHeight: 300)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+                    
+                    // Copy feedback
+                    if copiedFeedback {
+                        Text("Dice results copied to clipboard!")
+                            .font(.footnote)
+                            .foregroundColor(.green)
+                            .padding(.top, 5)
+                    }
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    func rollDice() {
+        isRolling = true
+        
+        // Generate random dice rolls
+        diceResults = (1...diceCount).map { _ in Int.random(in: 1...diceType) }
+        totalValue = diceResults.reduce(0, +)
+        copiedFeedback = false
+        
+        isRolling = false
+    }
+    
+    func copyDiceResults() {
+        let resultsText = diceResults.map { String($0) }.joined(separator: ", ") + " (Total: \(totalValue))"
+        UIPasteboard.general.string = resultsText
+        copiedFeedback = true
+        
+        // Reset the feedback after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            copiedFeedback = false
+        }
+    }
+}
+
+// MARK: - Coin Flipper View
+struct CoinFlipperView: View {
+    @State private var coinResults: [Bool] = []
+    @State private var numberOfFlips: Int = 1
+    @State private var isFlipping: Bool = false
+    @State private var copiedFeedback: Bool = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            // Coin configuration
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Number of Coins")
+                    .font(.headline)
+                
+                Stepper("\(numberOfFlips) coin\(numberOfFlips > 1 ? "s" : "")", value: $numberOfFlips, in: 1...10)
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+            }
+            
+            // Flip button
+            Button(action: flipCoins) {
+                Text("Flip Coin\(numberOfFlips > 1 ? "s" : "")")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            
+            // Results
+            if !coinResults.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text("Results:")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        // Copy button
+                        Button(action: copyCoinResults) {
+                            HStack {
+                                Image(systemName: "doc.on.doc")
+                                Text("Copy")
+                            }
+                            .font(.system(size: 14))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.blue)
+                            .cornerRadius(6)
+                        }
+                    }
+                    
+                    // Coin results
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))], spacing: 15) {
+                            ForEach(coinResults.indices, id: \.self) { index in
+                                VStack {
+                                    ZStack {
+                                        Circle()
+                                            .fill(coinResults[index] ? Color.yellow.opacity(0.3) : Color.gray.opacity(0.3))
+                                            .frame(width: 70, height: 70)
+                                            .overlay(
+                                                Circle()
+                                                    .stroke(coinResults[index] ? Color.yellow : Color.gray, lineWidth: 2)
+                                            )
+                                        
+                                        Text(coinResults[index] ? "H" : "T")
+                                            .font(.system(size: 24, weight: .bold))
+                                            .foregroundColor(coinResults[index] ? .orange : .gray)
+                                    }
+                                    
+                                    Text(coinResults[index] ? "Heads" : "Tails")
+                                        .font(.caption)
+                                        .foregroundColor(coinResults[index] ? .orange : .gray)
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                    .frame(maxHeight: 300)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+                    
+                    // Summary
+                    HStack {
+                        Text("Summary:")
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        let headsCount = coinResults.filter { $0 }.count
+                        let tailsCount = coinResults.count - headsCount
+                        
+                        Text("Heads: \(headsCount), Tails: \(tailsCount)")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    }
+                    .padding(.top, 5)
+                    
+                    // Copy feedback
+                    if copiedFeedback {
+                        Text("Coin results copied to clipboard!")
+                            .font(.footnote)
+                            .foregroundColor(.green)
+                            .padding(.top, 5)
+                    }
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+    }
+    
+    func flipCoins() {
+        isFlipping = true
+        
+        // Generate random coin flips (true = heads, false = tails)
+        coinResults = (1...numberOfFlips).map { _ in Bool.random() }
+        copiedFeedback = false
+        
+        isFlipping = false
+    }
+    
+    func copyCoinResults() {
+        let headsCount = coinResults.filter { $0 }.count
+        let tailsCount = coinResults.count - headsCount
+        
+        let resultsText = coinResults.map { $0 ? "Heads" : "Tails" }.joined(separator: ", ") +
+                         "\nSummary: Heads: \(headsCount), Tails: \(tailsCount)"
+        
+        UIPasteboard.general.string = resultsText
+        copiedFeedback = true
+        
+        // Reset the feedback after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            copiedFeedback = false
+        }
+    }
+}
+
+// MARK: - Tab Item Model
+struct TabItem: Identifiable {
+    let id = UUID()
+    let title: String
+}
+
+// MARK: - Main Content View with Top Navbar
+struct ContentView: View {
+    @State private var selectedTab = 0
+    
+    // Define tabs
+    private let tabs = [
+        TabItem(title: "Numbers"),
+        TabItem(title: "Dice"),
+        TabItem(title: "Coins")
+    ]
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Custom top navbar with blue background
+            VStack(spacing: 0) {
+                // App title
+                Text("Random Generator")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding(.top, 10)
+                
+                // Tab buttons (text only, no icons)
+                HStack(spacing: 0) {
+                    ForEach(0..<tabs.count, id: \.self) { index in
+                        Button(action: {
+                            selectedTab = index
+                        }) {
+                            Text(tabs[index].title)
+                                .font(.system(size: 16, weight: selectedTab == index ? .semibold : .regular))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(selectedTab == index ? Color.white.opacity(0.2) : Color.clear)
+                                .foregroundColor(.white)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if index < tabs.count - 1 {
+                            Divider()
+                                .frame(height: 30)
+                                .background(Color.white.opacity(0.3))
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .background(Color.blue)
+            }
+            .background(Color.blue)
+            .shadow(color: Color.gray.opacity(0.3), radius: 3, x: 0, y: 2)
+            
+            // Content based on selected tab
+            ZStack {
+                NumberGeneratorView()
+                    .opacity(selectedTab == 0 ? 1 : 0)
+                    .disabled(selectedTab != 0)
+                
+                DiceRollerView()
+                    .opacity(selectedTab == 1 ? 1 : 0)
+                    .disabled(selectedTab != 1)
+                
+                CoinFlipperView()
+                    .opacity(selectedTab == 2 ? 1 : 0)
+                    .disabled(selectedTab != 2)
             }
         }
     }
