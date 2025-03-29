@@ -1,10 +1,10 @@
 import SwiftUI
 
 @main
-struct RandomGeneratorApp: App {
+struct RandomNumberGeneratorApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
