@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B075552A2D98BB21003C014C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07555292D98BB21003C014C /* WidgetKit.framework */; };
+		B075552C2D98BB21003C014C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B075552B2D98BB21003C014C /* SwiftUI.framework */; };
+		B07555372D98BB23003C014C /* RandomWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B07555272D98BB21003C014C /* RandomWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B02FA54E2D871E3F00508CF0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,13 +27,47 @@
 			remoteGlobalIDString = B02FA53B2D871E3E00508CF0;
 			remoteInfo = RandomGenerator;
 		};
+		B07555352D98BB23003C014C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B02FA5342D871E3E00508CF0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B07555262D98BB21003C014C;
+			remoteInfo = RandomWidgetsExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B075553C2D98BB23003C014C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B07555372D98BB23003C014C /* RandomWidgetsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B02FA53C2D871E3E00508CF0 /* RandomGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B02FA54D2D871E3F00508CF0 /* RandomGeneratorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomGeneratorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B02FA5572D871E3F00508CF0 /* RandomGeneratorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomGeneratorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B07555272D98BB21003C014C /* RandomWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RandomWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B07555292D98BB21003C014C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B075552B2D98BB21003C014C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B07555382D98BB23003C014C /* Exceptions for "RandomWidgets" folder in "RandomWidgetsExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B07555262D98BB21003C014C /* RandomWidgetsExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B02FA53E2D871E3E00508CF0 /* RandomGenerator */ = {
@@ -43,6 +83,14 @@
 		B02FA55A2D871E3F00508CF0 /* RandomGeneratorUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RandomGeneratorUITests;
+			sourceTree = "<group>";
+		};
+		B075552D2D98BB21003C014C /* RandomWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B07555382D98BB23003C014C /* Exceptions for "RandomWidgets" folder in "RandomWidgetsExtension" target */,
+			);
+			path = RandomWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +117,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B07555242D98BB21003C014C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B075552C2D98BB21003C014C /* SwiftUI.framework in Frameworks */,
+				B075552A2D98BB21003C014C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +135,8 @@
 				B02FA53E2D871E3E00508CF0 /* RandomGenerator */,
 				B02FA5502D871E3F00508CF0 /* RandomGeneratorTests */,
 				B02FA55A2D871E3F00508CF0 /* RandomGeneratorUITests */,
+				B075552D2D98BB21003C014C /* RandomWidgets */,
+				B07555282D98BB21003C014C /* Frameworks */,
 				B02FA53D2D871E3E00508CF0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +147,18 @@
 				B02FA53C2D871E3E00508CF0 /* RandomGenerator.app */,
 				B02FA54D2D871E3F00508CF0 /* RandomGeneratorTests.xctest */,
 				B02FA5572D871E3F00508CF0 /* RandomGeneratorUITests.xctest */,
+				B07555272D98BB21003C014C /* RandomWidgetsExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B07555282D98BB21003C014C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B07555292D98BB21003C014C /* WidgetKit.framework */,
+				B075552B2D98BB21003C014C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +171,12 @@
 				B02FA5382D871E3E00508CF0 /* Sources */,
 				B02FA5392D871E3E00508CF0 /* Frameworks */,
 				B02FA53A2D871E3E00508CF0 /* Resources */,
+				B075553C2D98BB23003C014C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B07555362D98BB23003C014C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B02FA53E2D871E3E00508CF0 /* RandomGenerator */,
@@ -163,6 +234,28 @@
 			productReference = B02FA5572D871E3F00508CF0 /* RandomGeneratorUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		B07555262D98BB21003C014C /* RandomWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B07555392D98BB23003C014C /* Build configuration list for PBXNativeTarget "RandomWidgetsExtension" */;
+			buildPhases = (
+				B07555232D98BB21003C014C /* Sources */,
+				B07555242D98BB21003C014C /* Frameworks */,
+				B07555252D98BB21003C014C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B075552D2D98BB21003C014C /* RandomWidgets */,
+			);
+			name = RandomWidgetsExtension;
+			packageProductDependencies = (
+			);
+			productName = RandomWidgetsExtension;
+			productReference = B07555272D98BB21003C014C /* RandomWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +277,9 @@
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = B02FA53B2D871E3E00508CF0;
 					};
+					B07555262D98BB21003C014C = {
+						CreatedOnToolsVersion = 16.2;
+					};
 				};
 			};
 			buildConfigurationList = B02FA5372D871E3E00508CF0 /* Build configuration list for PBXProject "RandomGenerator" */;
@@ -203,6 +299,7 @@
 				B02FA53B2D871E3E00508CF0 /* RandomGenerator */,
 				B02FA54C2D871E3F00508CF0 /* RandomGeneratorTests */,
 				B02FA5562D871E3F00508CF0 /* RandomGeneratorUITests */,
+				B07555262D98BB21003C014C /* RandomWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +320,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B02FA5552D871E3F00508CF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B07555252D98BB21003C014C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +357,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B07555232D98BB21003C014C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +376,11 @@
 			isa = PBXTargetDependency;
 			target = B02FA53B2D871E3E00508CF0 /* RandomGenerator */;
 			targetProxy = B02FA5582D871E3F00508CF0 /* PBXContainerItemProxy */;
+		};
+		B07555362D98BB23003C014C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B07555262D98BB21003C014C /* RandomWidgetsExtension */;
+			targetProxy = B07555352D98BB23003C014C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -389,9 +505,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RandomGenerator/RandomGenerator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RandomGenerator/Preview Content\"";
+				DEVELOPMENT_TEAM = G49A9N7426;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -411,6 +529,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = panapps.RandomGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -427,9 +546,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RandomGenerator/RandomGenerator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RandomGenerator/Preview Content\"";
+				DEVELOPMENT_TEAM = G49A9N7426;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -449,6 +570,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = panapps.RandomGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -545,6 +667,63 @@
 			};
 			name = Release;
 		};
+		B075553A2D98BB23003C014C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RandomWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RandomWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = panapps.RandomGenerator.RandomWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B075553B2D98BB23003C014C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RandomWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RandomWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = panapps.RandomGenerator.RandomWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -580,6 +759,15 @@
 			buildConfigurations = (
 				B02FA5682D871E3F00508CF0 /* Debug */,
 				B02FA5692D871E3F00508CF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B07555392D98BB23003C014C /* Build configuration list for PBXNativeTarget "RandomWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B075553A2D98BB23003C014C /* Debug */,
+				B075553B2D98BB23003C014C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

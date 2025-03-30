@@ -28,6 +28,9 @@ struct MainView: View {
                 CoinFlipperView()
                     .opacity(selectedTab == 2 ? 1 : 0)
                     .disabled(selectedTab != 2)
+                //WidgetConfigView()
+                //    .opacity(selectedTab == 3 ? 1 : 0)
+                //    .disabled(selectedTab != 3)
             }
         }
     }
