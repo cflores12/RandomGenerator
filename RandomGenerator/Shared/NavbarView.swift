@@ -7,7 +7,7 @@ struct NavbarView: View {
     var body: some View {
         VStack(spacing: 0) {
             // App title
-            Text("Random Generator")
+            Text("Random")
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding(.top, 10)

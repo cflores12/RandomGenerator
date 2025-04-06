@@ -7,7 +7,8 @@ struct MainView: View {
     private let tabs = [
         TabItem(title: "Numbers"),
         TabItem(title: "Dice"),
-        TabItem(title: "Coins")
+        TabItem(title: "Coins"),
+        TabItem(title: "Widgets")
     ]
     
     var body: some View {
@@ -28,9 +29,9 @@ struct MainView: View {
                 CoinFlipperView()
                     .opacity(selectedTab == 2 ? 1 : 0)
                     .disabled(selectedTab != 2)
-                //WidgetConfigView()
-                //    .opacity(selectedTab == 3 ? 1 : 0)
-                //    .disabled(selectedTab != 3)
+                WidgetConfigView()
+                    .opacity(selectedTab == 3 ? 1 : 0)
+                    .disabled(selectedTab != 3)
             }
         }
     }

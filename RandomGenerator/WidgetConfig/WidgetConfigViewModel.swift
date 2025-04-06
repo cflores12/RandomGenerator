@@ -3,56 +3,89 @@ import SwiftUI
 import WidgetKit
 
 class WidgetConfigViewModel: ObservableObject {
-    @Published var selectedWidgetType: String = UserDefaults(suiteName: "group.com.randomgenerator.app")?.string(forKey: "widgetType") ?? "numbers"
+    // Use a computed property to safely access UserDefaults
+    private var userDefaults: UserDefaults? {
+        UserDefaults(suiteName: "group.com.randomgenerator.app")
+    }
+    
+    @Published var selectedWidgetType: String
     
     // Numbers settings
-    @Published var minValueText: String = String(UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "minValue") ?? 1)
-    @Published var maxValueText: String = String(UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "maxValue") ?? 100)
-    @Published var numberCount: Int = UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "numberCount") ?? 3
-    
-    // Dice settings
-    @Published var diceCount: Int = UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "diceCount") ?? 2
-    @Published var diceType: Int = UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "diceType") ?? 6
-    let diceTypes = [4, 6, 8, 10, 12, 20, 100]
+    @Published var minValueText: String
+    @Published var maxValueText: String
+    @Published var numberCount: Int
     
     // Coin settings
-    @Published var coinCount: Int = UserDefaults(suiteName: "group.com.randomgenerator.app")?.integer(forKey: "coinCount") ?? 3
+    @Published var coinCount: Int
     
     // Preview data
     @Published var previewNumbers: [Int] = []
-    @Published var previewDiceResults: [Int] = []
     @Published var previewCoinResults: [Bool] = []
     
     init() {
+        // First, initialize all stored properties with default values
+        self.selectedWidgetType = WidgetType.numbers.rawValue
+        self.minValueText = "1"
+        self.maxValueText = "100"
+        self.numberCount = 3
+        self.coinCount = 3
+        
+        // Now that all properties are initialized, we can use 'self'
+        // to load values from UserDefaults if available
+        if let defaults = UserDefaults(suiteName: "group.com.randomgenerator.app") {
+            if let widgetType = defaults.string(forKey: "widgetType") {
+                self.selectedWidgetType = widgetType
+            }
+            
+            let minValue = defaults.integer(forKey: "minValue")
+            if minValue != 0 {
+                self.minValueText = String(minValue)
+            }
+            
+            let maxValue = defaults.integer(forKey: "maxValue")
+            if maxValue != 0 {
+                self.maxValueText = String(maxValue)
+            }
+            
+            let numberCount = defaults.integer(forKey: "numberCount")
+            if numberCount != 0 {
+                self.numberCount = numberCount
+            }
+            
+            let coinCount = defaults.integer(forKey: "coinCount")
+            if coinCount != 0 {
+                self.coinCount = coinCount
+            }
+        }
+        
+        // Generate initial preview data
         updatePreview()
     }
     
     func saveWidgetType() {
-        UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(selectedWidgetType, forKey: "widgetType")
+        userDefaults?.set(selectedWidgetType, forKey: "widgetType")
         updatePreview()
     }
     
     func saveConfiguration() {
         // Save numbers settings
         if let minValue = Int(minValueText) {
-            UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(minValue, forKey: "minValue")
+            userDefaults?.set(minValue, forKey: "minValue")
         }
         
         if let maxValue = Int(maxValueText) {
-            UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(maxValue, forKey: "maxValue")
+            userDefaults?.set(maxValue, forKey: "maxValue")
         }
         
-        UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(numberCount, forKey: "numberCount")
-        
-        // Save dice settings
-        UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(diceCount, forKey: "diceCount")
-        UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(diceType, forKey: "diceType")
+        userDefaults?.set(numberCount, forKey: "numberCount")
         
         // Save coin settings
-        UserDefaults(suiteName: "group.com.randomgenerator.app")?.set(coinCount, forKey: "coinCount")
+        userDefaults?.set(coinCount, forKey: "coinCount")
         
-        // Reload widgets
+        // Reload widgets if WidgetCenter is available
+        #if !PREVIEW
         WidgetCenter.shared.reloadAllTimelines()
+        #endif
         
         // Update preview
         updatePreview()
@@ -60,25 +93,22 @@ class WidgetConfigViewModel: ObservableObject {
     
     func updatePreview() {
         switch selectedWidgetType {
-        case "numbers":
+        case WidgetType.numbers.rawValue:
             let min = Int(minValueText) ?? 1
             let max = Int(maxValueText) ?? 100
             previewNumbers = (1...numberCount).map { _ in Int.random(in: min...max) }
-            previewDiceResults = []
             previewCoinResults = []
             
-        case "dice":
-            previewDiceResults = (1...diceCount).map { _ in Int.random(in: 1...diceType) }
-            previewNumbers = []
-            previewCoinResults = []
-            
-        case "coins":
+        case WidgetType.coins.rawValue:
             previewCoinResults = (1...coinCount).map { _ in Bool.random() }
             previewNumbers = []
-            previewDiceResults = []
             
         default:
-            break
+            // Default to numbers if unknown type
+            let min = Int(minValueText) ?? 1
+            let max = Int(maxValueText) ?? 100
+            previewNumbers = (1...numberCount).map { _ in Int.random(in: min...max) }
+            previewCoinResults = []
         }
     }
 }

@@ -1,10 +1,3 @@
-//
-//  RandomWidgetsBundle.swift
-//  RandomWidgets
-//
-//  Created by chanales flores on 3/29/25.
-//
-
 import WidgetKit
 import SwiftUI
 
